@@ -1,0 +1,10 @@
+compilers=&dxc
+
+group.dxc.compilers=upstream
+group.dxc.compilerType=hlsl
+group.dxc.includeFlag=-I
+group.dxc.versionFlag=--version
+group.dxc.groupName=DXC compilers
+
+compiler.upstream.exe=C:\docker\build\Release\bin\dxc.exe
+compiler.upstream.name=DXC from upstream
