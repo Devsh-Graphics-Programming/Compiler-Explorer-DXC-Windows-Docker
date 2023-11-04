@@ -1,10 +1,21 @@
-:: Build.bat.docker - build.bat on docker container
+@echo off
+setlocal enabledelayedexpansion
+
+:: Default command to run
+set command_to_run=nop
+
+:: Parse command line arguments
+for %%A in (%*) do (
+    if "%%A" == "--run-godbolt" (
+        set command_to_run=npm run dev -- --language dxc
+    )
+)
 
 :: Get the directory where this script is located
-SET scriptDirectory=%~dp0
+set scriptDirectory=%~dp0
 
 :: Change the current working directory to the script directory
-CD /D %scriptDirectory%
+cd /d %scriptDirectory%
 
 :: Update with DXC's upstream
 git -C ./git/dxc fetch origin main
@@ -17,5 +28,7 @@ cmake -C ./git/dxc/cmake/caches/PredefinedParams.cmake -S ./git/dxc -B ./build -
 :: Build dxc executable
 cmake --build ./build --config Release --target dxc -j2
 
-:: Run Compiler Explorer instance with DXC compiler
-cd ./git/godbolt && npm run dev -- --language dxc
+:: Run Compiler Explorer instance with DXC compiler (only if --run-godbolt was present)
+if "%command_to_run%" neq "nop" (
+    cd ./git/godbolt && !command_to_run!
+)
