@@ -7,7 +7,7 @@ set command_to_run=nop
 :: Parse command line arguments
 for %%A in (%*) do (
     if "%%A" == "--run-godbolt" (
-        set command_to_run=npm start --language hlsl
+        set command_to_run=npm run dev -- --language "hlsl"
     )
 )
 
