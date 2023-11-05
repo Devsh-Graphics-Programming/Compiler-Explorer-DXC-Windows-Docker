@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022-amd64
 # Restore the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
 
-# Install programs and dependencies
 RUN `
 	# Download Git for Windows.
 	curl -SL --output git.zip https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/MinGit-2.41.0.3-64-bit.zip `
@@ -17,10 +16,8 @@ RUN `
 	# Unzip Git.
 	&& tar -xf git.zip -C C:/docker/dependencies/git `
 	`
-	# Add Git to the system PATH.
+	# Add Git to the system PATH and cleanup
 	&& setx PATH "%PATH%;C:/docker/dependencies/git/cmd" /M `
-	`
-	# Cleanup
 	&& del /q git.zip
     
 RUN `
@@ -38,8 +35,9 @@ RUN `
 	--remove Microsoft.VisualStudio.Component.Windows10SDK.14393 `
 	--remove Microsoft.VisualStudio.Component.Windows81SDK `
 	|| IF "%ERRORLEVEL%"=="3010" EXIT 0) `
-	`
-	# Cleanup
+ 	`
+  	# add CMake to the system PATH and cleanup
+	&& setx PATH "%PATH%;C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin" /M `
 	&& del /q vs_buildtools.exe
 	
 RUN `
@@ -54,21 +52,19 @@ RUN `
 	&& msiexec /i nodejs.msi /qn `
 	&& del /q nodejs.msi
 	
-# Clone git repositories
 RUN `
 	# Clone compiler-explorer and its submodules
 	mkdir "C:/docker/git/godbolt" `
-	&& "C:/docker/dependencies/git/cmd/git" clone https://github.com/compiler-explorer/compiler-explorer.git ./docker/git/godbolt `
+	&& git clone https://github.com/compiler-explorer/compiler-explorer.git ./docker/git/godbolt `
 	`
 	# Clone DirectXShaderCompiler and its submodules
 	&& mkdir "C:/docker/git/dxc" `
-	&& "C:/docker/dependencies/git/cmd/git" clone https://github.com/microsoft/DirectXShaderCompiler.git ./docker/git/dxc `
-	&& "C:/docker/dependencies/git/cmd/git" -C ./docker/git/dxc submodule update --init --recursive `
-	&& "C:/docker/dependencies/git/cmd/git" config --global --add safe.directory C:/docker/git/dxc
+	&& git clone https://github.com/microsoft/DirectXShaderCompiler.git ./docker/git/dxc `
+	&& git -C ./docker/git/dxc submodule update --init --recursive `
+	&& git config --global --add safe.directory C:/docker/git/dxc
 
-# npm godbolt project install
 RUN `
-	# Clone compiler-explorer and its submodules
+	# npm godbolt project install
 	cd "C:/docker/git/godbolt" `
 	&& npm install `
 	&& npm install webpack -g `
