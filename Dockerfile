@@ -73,7 +73,7 @@ RUN `
 
 # Make build.bat and dxc.local.properties available to a docker container
 COPY scripts/build.bat.docker C:/docker/build.bat
-COPY scripts/dxc.local.properties.docker C:/docker/git/godbolt/etc/config/dxc.local.properties
+COPY scripts/hlsl.local.properties.docker C:/docker/git/godbolt/etc/config/hlsl.local.properties
 
 # Add docker directory to the system PATH
 RUN `
