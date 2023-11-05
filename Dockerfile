@@ -71,9 +71,8 @@ RUN `
 	&& npm install webpack-cli -g `
 	&& npm update webpack
 
-# Make build.bat and dxc.local.properties available to a docker container
+# Make build.bat available to a docker container
 COPY scripts/build.bat.docker C:/docker/build.bat
-COPY scripts/hlsl.local.properties.docker C:/docker/git/godbolt/etc/config/hlsl.local.properties
 
 # Add docker directory to the system PATH
 RUN `
@@ -82,6 +81,9 @@ RUN `
 # Build DXC
 RUN `
 	build.bat
+
+# Make dxc.local.properties available to a docker container
+COPY scripts/hlsl.local.properties.docker C:/docker/git/godbolt/etc/config/hlsl.local.properties
 
 # Define the entry point for the docker container.
 # This entry point starts the developer command prompt and launches the PowerShell shell.
