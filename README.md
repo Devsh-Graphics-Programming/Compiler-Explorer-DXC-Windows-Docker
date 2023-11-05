@@ -11,28 +11,21 @@ Make sure you have switched to `Containers for Windows`
 
 ![Containers for Windows](https://user-images.githubusercontent.com/65064509/152947300-affca592-35a7-4e4c-a7fc-2055ce1ba528.png)
 
-clone this repository
-
-```bash
-git clone https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker.git
-```
-
 build a docker image given a [Dockerfile](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/Dockerfile) from the repository (may take a while)
 
 ```bash
-cd Compiler-Explorer-DXC-Windows-Docker
-docker build -t godbolt:latest -m 3GB .
+docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker -t godbolt
 ```
 
-run the docker container
+run the docker container with proxied 10240 godbolt's port
 
 ```
-docker run -it godbolt
+docker run -p 10240:10240 -it godbolt 
 ```
 
 and execute build script
 ```
-./docker/build.bat
+build.bat --run-godbolt
 ```
 
 once the script finishes open your browser with http://localhost:10240/ and enjoy compiling with most recent DXC
