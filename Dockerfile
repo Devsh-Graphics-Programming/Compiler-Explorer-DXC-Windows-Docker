@@ -75,9 +75,13 @@ RUN `
 COPY scripts/build.bat.docker C:/docker/build.bat
 COPY scripts/dxc.local.properties.docker C:/docker/git/godbolt/etc/config/dxc.local.properties
 
+# Add docker directory to the system PATH
+RUN `
+	setx PATH "%PATH%;C:/docker" /M 
+
 # Build DXC
 RUN `
-	"C:/docker/build.bat"
+	build.bat
 
 # Define the entry point for the docker container.
 # This entry point starts the developer command prompt and launches the PowerShell shell.
