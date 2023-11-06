@@ -4,7 +4,7 @@ In hurry to compile your HLSL with latest DXC? Unfortunately [Godbolt](https://g
 
 ## Requirements
 
-- [Git]([Git - Downloading Package (git-scm.com)](https://git-scm.com/download/win))
+- [Git](https://git-scm.com/download/win)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Enabled Hyper-V Windows feature](https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v#enable-hyper-v-using-powershell)
 
