@@ -30,7 +30,7 @@ os.chdir(scriptDirectory)
 subprocess.run("git -C ./git/dxc fetch origin main")
 print("Comparing local and remote DXC hashes...")
 
-if getGitRevisionHash("./git/dxc", "HEAD") == getGitRevisionHash("./git/dxc", "origin/main") or onInit:
+if getGitRevisionHash("./git/dxc", "HEAD") == getGitRevisionHash("./git/dxc", "origin/main") and not onInit:
 	print("Hashes identical, skipping build")
 else:
 	subprocess.run("git -C ./git/dxc checkout origin/main")
