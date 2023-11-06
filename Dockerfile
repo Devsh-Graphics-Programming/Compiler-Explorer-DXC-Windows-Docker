@@ -71,8 +71,9 @@ RUN `
 	&& npm install webpack-cli -g `
 	&& npm update webpack
 
-# Make build.bat available to a docker container
+# Make build scripts available to a docker container
 COPY scripts/build.bat.docker C:/docker/build.bat
+COPY scripts/build.py.docker C:/docker/build.py
 
 # Add docker directory to the system PATH
 RUN `

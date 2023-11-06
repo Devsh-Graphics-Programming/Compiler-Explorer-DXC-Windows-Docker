@@ -29,3 +29,18 @@ build.bat --run-godbolt
 ```
 
 once the script finishes open your browser with http://localhost:10240/ and enjoy compiling with most recent DXC
+
+#### Build script arguments
+
+The syntax is following
+
+```bash
+build.bat <BUILD_SCRIPT_OPTIONS> -- <CMAKE_BUILD_OPTIONS>
+```
+
+for example you may want update DXC & run godbolt but increase build jobs and verbosity, then you would execute
+
+```
+build.bat --run-godbolt -- -j8 -v
+```
+
