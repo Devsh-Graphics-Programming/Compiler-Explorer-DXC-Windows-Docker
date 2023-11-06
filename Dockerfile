@@ -72,8 +72,8 @@ RUN `
 	&& npm update webpack
 
 # Make build scripts available to a docker container
-COPY scripts/build.bat.docker C:/docker/build.bat
-COPY scripts/build.py.docker C:/docker/build.py
+COPY scripts/build.bat C:/docker/build.bat
+COPY scripts/build.py C:/docker/build.py
 
 # Add docker directory to the system PATH
 RUN `
@@ -81,10 +81,10 @@ RUN `
 
 # Build DXC
 RUN `
-	build.bat
+	build.bat --on-init
 
 # Make dxc.local.properties available to a docker container
-COPY scripts/hlsl.local.properties.docker C:/docker/git/godbolt/etc/config/hlsl.local.properties
+COPY scripts/hlsl.local.properties C:/docker/git/godbolt/etc/config/hlsl.local.properties
 
 # Define the entry point for the docker container.
 # This entry point starts the developer command prompt and launches the PowerShell shell.

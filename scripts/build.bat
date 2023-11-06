@@ -8,4 +8,4 @@ set scriptDirectory=%~dp0
 cd /d %scriptDirectory%
 
 :: Execute implementation of the build script in pyhon
-python3 ./build.py %*
+python ./build.py %*

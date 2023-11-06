@@ -5,12 +5,15 @@ import sys
 def getGitRevisionHash(str gitRepoPath, str gitObject) -> str:
     return subprocess.check_output(f"git -C {gitRepoPath} rev-parse {gitObject}").decode('ascii').strip()
 
+onInit = False
 runGodbolt = False
 extraBuildVariables = ""
 
 # Parse command line arguments
 for arg in sys.argv:
-    if arg == "--run-godbolt":
+	if arg == "--on-init":
+		onInit = True
+    elif arg == "--run-godbolt":
         runGodbolt = True
     elif arg == "--":
         # Capture everything after "--" considered as extra CMake build variables
@@ -27,10 +30,9 @@ os.chdir(scriptDirectory)
 subprocess.run("git -C ./git/dxc fetch origin main")
 print("Comparing local and remote DXC hashes...")
 
-if getGitRevisionHash("./git/dxc", "HEAD") == getGitRevisionHash("./git/dxc", "origin/main"):
+if getGitRevisionHash("./git/dxc", "HEAD") == getGitRevisionHash("./git/dxc", "origin/main") or onInit:
 	print("Hashes identical, skipping build")
 else:
-	print("Hashes differnet, updating DXC...")
 	subprocess.run("git -C ./git/dxc checkout origin/main")
 	subprocess.run("git -C ./git/dxc submodule update --init --recursive")
 
