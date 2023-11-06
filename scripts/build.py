@@ -11,8 +11,8 @@ extraBuildVariables = ""
 
 # Parse command line arguments
 for arg in sys.argv:
-	if arg == "--on-init":
-		onInit = True
+    if arg == "--on-init":
+        onInit = True
     elif arg == "--run-godbolt":
         runGodbolt = True
     elif arg == "--":
