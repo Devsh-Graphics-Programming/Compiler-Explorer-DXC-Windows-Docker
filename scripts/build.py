@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 
-def getGitRevisionHash(str gitRepoPath, str gitObject) -> str:
+def getGitRevisionHash(gitRepoPath, gitObject) -> str:
     return subprocess.check_output(f"git -C {gitRepoPath} rev-parse {gitObject}").decode('ascii').strip()
 
 onInit = False
