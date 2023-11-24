@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 def getGitRevisionHash(gitRepoPath, gitObject) -> str:
-    return subprocess.check_output(f"git -C {gitRepoPath} rev-parse {gitObject}").decode('ascii').strip()
+    return subprocess.check_output(f"git -C \"{gitRepoPath}\" rev-parse {gitObject}").decode('ascii').strip()
 
 onInit = False
 runGodbolt = False
@@ -26,21 +26,24 @@ scriptDirectory = os.path.dirname(os.path.abspath(__file__))
 # Change the current working directory to the script directory
 os.chdir(scriptDirectory)
 
+GIT_GODBOLT_REPOSITORY_PATH = os.environ.get('GIT_GODBOLT_REPOSITORY_PATH', '')
+GIT_DXC_REPOSITORY_PATH = os.environ.get('GIT_DXC_REPOSITORY_PATH', '')
+
 # Update with DXC's upstream
-subprocess.run("git -C ./git/dxc fetch origin main")
+subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" fetch origin main")
 print("Comparing local and remote DXC hashes...")
 
-if getGitRevisionHash("./git/dxc", "HEAD") == getGitRevisionHash("./git/dxc", "origin/main") and not onInit:
+if getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD") == getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "origin/main") and not onInit:
 	print("Hashes identical, skipping build")
 else:
-	subprocess.run("git -C ./git/dxc checkout origin/main")
-	subprocess.run("git -C ./git/dxc submodule update --init --recursive")
+	subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" checkout origin/main")
+	subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" submodule update --init --recursive")
 
 	# Configure LLVM project
 	subprocess.run([
 		"cmake",
-		"-C", "./git/dxc/cmake/caches/PredefinedParams.cmake",
-		"-S", "./git/dxc",
+		"-C", f"{GIT_DXC_REPOSITORY_PATH}/cmake/caches/PredefinedParams.cmake",
+		"-S", f"{GIT_DXC_REPOSITORY_PATH}",
 		"-B", "./build",
 		"-Ax64",
 		"-T", "v143",
@@ -88,5 +91,5 @@ else:
 
 # Run Compiler Explorer instance with DXC compiler (only if --run-godbolt was present)
 if runGodbolt:
-    os.chdir("./git/godbolt")
+    os.chdir(GIT_GODBOLT_REPOSITORY_PATH)
     subprocess.run("npm run dev -- --language \"hlsl\"", shell=True)

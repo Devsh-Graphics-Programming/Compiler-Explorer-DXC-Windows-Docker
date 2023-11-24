@@ -51,40 +51,6 @@ RUN `
 	curl -SL --output nodejs.msi https://nodejs.org/dist/v20.9.0/node-v20.9.0-x64.msi `
 	&& msiexec /i nodejs.msi /qn `
 	&& del /q nodejs.msi
-	
-RUN `
-	# Clone compiler-explorer and its submodules
-	mkdir "C:/docker/git/godbolt" `
-	&& git clone https://github.com/compiler-explorer/compiler-explorer.git ./docker/git/godbolt `
-	`
-	# Clone DirectXShaderCompiler and its submodules
-	&& mkdir "C:/docker/git/dxc" `
-	&& git clone https://github.com/microsoft/DirectXShaderCompiler.git ./docker/git/dxc `
-	&& git -C ./docker/git/dxc submodule update --init --recursive `
-	&& git config --global --add safe.directory C:/docker/git/dxc
-
-RUN `
-	# npm godbolt project install
-	cd "C:/docker/git/godbolt" `
-	&& npm install `
-	&& npm install webpack -g `
-	&& npm install webpack-cli -g `
-	&& npm update webpack
-
-# Make build scripts available to a docker container
-COPY scripts/build.bat C:/docker/build.bat
-COPY scripts/build.py C:/docker/build.py
-
-# Add docker directory to the system PATH
-RUN `
-	setx PATH "%PATH%;C:/docker" /M 
-
-# Build DXC
-RUN `
-	build.bat --on-init
-
-# Make dxc.local.properties available to a docker container
-COPY scripts/hlsl.local.properties C:/docker/git/godbolt/etc/config/hlsl.local.properties
 
 # Define the entry point for the docker container.
 # This entry point starts the developer command prompt and launches the PowerShell shell.
