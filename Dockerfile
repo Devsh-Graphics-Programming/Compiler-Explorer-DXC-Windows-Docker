@@ -4,11 +4,11 @@
 ARG BASE_IMAGE=mcr.microsoft.com/windows/servercore:ltsc2022-amd64
 ARG GIT_INSTALL_DIRECTORY=C:/docker/dependencies/git
 ARG PYTHON_INSTALL_DIRECTORY=C:/docker/dependencies/Python
-ARG VS_INSTALL_PATH=%ProgramFiles(x86)%/Microsoft Visual Studio/2022/BuildTools
+ARG VS_INSTALL_DIRECTORY=%ProgramFiles(x86)%/Microsoft Visual Studio/2022/BuildTools
 
 FROM ${BASE_IMAGE}
 
-ARG VS_DEV_CMD_PATH=$VS_INSTALL_PATH/Common7/Tools/VsDevCmd.bat
+ARG VS_DEV_CMD_PATH=$VS_INSTALL_DIRECTORY/Common7/Tools/VsDevCmd.bat
 
 # Set the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
@@ -35,7 +35,7 @@ RUN `
 	`
 	# Install Build Tools with the Microsoft.VisualStudio.Workload.VCTools recommended workload and ATL & ATLMFC, excluding some Windows SDKs.
 	&& (start /w vs_buildtools.exe --quiet --wait --norestart --nocache `
-	--installPath "$VS_INSTALL_PATH" `
+	--installPath "$VS_INSTALL_DIRECTORY" `
 	--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended `
 	--add Microsoft.VisualStudio.Component.VC.ATL `
 	--add Microsoft.VisualStudio.Component.VC.ATLMFC `
@@ -46,7 +46,7 @@ RUN `
 	|| IF "%ERRORLEVEL%"=="3010" EXIT 0) `
  	`
   	# add VS's CMake to the system PATH and cleanup
-	&& setx PATH "%PATH%;$VS_INSTALL_PATH/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin" /M `
+	&& setx PATH "%PATH%;$VS_INSTALL_DIRECTORY/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin" /M `
 	&& del /q vs_buildtools.exe
 	
 RUN `
