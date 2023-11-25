@@ -4,6 +4,7 @@
 ARG BASE_IMAGE=artifactory.devsh.eu/services/godbolt.base:latest
 
 ARG BUILD_SCRIPT_DIRECTORY="C:\docker"
+ARG BUILD_SCRIPT_ARGS=""
 ARG JOBS=1
 
 FROM ${BASE_IMAGE}
@@ -18,11 +19,12 @@ RUN `
 COPY scripts\build.bat "$BUILD_SCRIPT_DIRECTORY\build.bat"
 COPY scripts\build.py "$BUILD_SCRIPT_DIRECTORY\build.py"
 
+ARG BUILD_SCRIPT_ARGS
 ARG JOBS
 
 # Build DXC
 RUN `
-	build.bat --on-init -- -j%JOBS%
+	build.bat %BUILD_SCRIPT_ARGS% -- -j%JOBS%
 
 # Generate dxc.local.properties
 RUN `
@@ -30,4 +32,4 @@ RUN `
 
 # Define the entry point for the docker container.
 # This entry point starts the developer command prompt and launches the PowerShell shell.
-ENTRYPOINT ["VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
+ENTRYPOINT ["VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass", "-Command", "build.bat"]
