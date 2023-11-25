@@ -24,7 +24,7 @@ docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows
 build [***instance***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/project/Dockerfile) docker image
 
 ```powershell
-docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/project -t godbolt.instace --build-arg BASE_IMAGE=godbolt.base
+docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker#master:project -t godbolt.instace --build-arg BASE_IMAGE=godbolt.base --build-arg BUILD_SCRIPT_ARGS="-- j4"
 ```
 
 run your instance docker container with proxied 10240 port CE listens on
