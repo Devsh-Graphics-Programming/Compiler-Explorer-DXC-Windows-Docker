@@ -5,8 +5,9 @@ import sys
 def getGitRevisionHash(gitRepoPath, gitObject) -> str:
     return subprocess.check_output(f"git -C \"{gitRepoPath}\" rev-parse {gitObject}").decode('ascii').strip()
 
-configureOnly = False
 runGodbolt = False
+configureOnly = False
+hashCheckOnly = False
 extraBuildVariables = ""
 
 try:
@@ -16,6 +17,8 @@ try:
             runGodbolt = True
         elif arg == "--configure-only":
             configureOnly = True
+        elif arg == "--hash-check-only":
+            hashCheckOnly = True
         elif arg == "--":
             # Capture everything after "--" considered as extra CMake build variables
             extraBuildVariables = " ".join(sys.argv[sys.argv.index(arg) + 1:])
@@ -35,6 +38,12 @@ try:
     print("Comparing local and remote DXC hashes...")
 
     areHashesDifferent = not (getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD") == getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "origin/main"))
+    
+    if hashCheckOnly:
+        if areHashesDifferent:
+            sys.exit(1)
+        else:
+            sys.exit()
 
     if areHashesDifferent:
         print("Hashes different, updating local DXC repository...")
