@@ -21,7 +21,7 @@ ARG BUILD_SCRIPT_ARGS
 
 # Build DXC
 RUN `
-	build.bat %BUILD_SCRIPT_ARGS%
+	VsDevCmd.bat && powershell.exe -NoLogo -ExecutionPolicy Bypass -Command build.bat %BUILD_SCRIPT_ARGS%
 
 # Generate dxc.local.properties
 RUN `
