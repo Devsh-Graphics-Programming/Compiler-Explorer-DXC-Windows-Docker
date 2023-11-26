@@ -1,9 +1,11 @@
-import os
-import subprocess
-import sys
+import os, subprocess, sys
 
 def getGitRevisionHash(gitRepoPath, gitObject) -> str:
     return subprocess.check_output(f"git -C \"{gitRepoPath}\" rev-parse {gitObject}").decode('ascii').strip()
+
+def logSHAs(local, remote):
+    print(f"Local SHA: \"${local}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/${local}")
+    print(f"Remote latest SHA: \"${remote}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/${remote}")
 
 runGodbolt = False
 configureOnly = False
@@ -33,12 +35,17 @@ try:
     GIT_GODBOLT_REPOSITORY_PATH = os.environ.get('GIT_GODBOLT_REPOSITORY_PATH', '')
     GIT_DXC_REPOSITORY_PATH = os.environ.get('GIT_DXC_REPOSITORY_PATH', '')
 
-    # Update with DXC's upstream
+    # Request update with DXC's upstream
     subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" fetch origin main", check=True)
-    print("Comparing local and remote DXC hashes...")
+    print("Comparing local & remote DXC SHAs...")
 
-    areHashesDifferent = not (getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD") == getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "origin/main"))
+    localSHA = getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD")
+    remoteSHA = getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "origin/main")
+
+    areHashesDifferent = localSHA != remoteSHA
     
+    logSHAs(localSHA, remoteSHA)
+
     if hashCheckOnly:
         if areHashesDifferent:
             sys.exit(1)
@@ -46,11 +53,11 @@ try:
             sys.exit()
 
     if areHashesDifferent:
-        print("Hashes different, updating local DXC repository...")
+        print("SHA hashes are different, fetching remote repository and updating local...")
         subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" checkout origin/main", check=True)
         subprocess.run(f"git -C \"{GIT_DXC_REPOSITORY_PATH}\" submodule update --init --recursive", check=True)
     else:
-        print("Hashes identical!")
+        print("SHA hashes are identical, local repository won't get updated from remote!")
 
     if areHashesDifferent or not os.path.exists("./build"):
         # Configure LLVM project
