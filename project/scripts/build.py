@@ -4,8 +4,8 @@ def getGitRevisionHash(gitRepoPath, gitObject) -> str:
     return subprocess.check_output(f"git -C \"{gitRepoPath}\" rev-parse {gitObject}").decode('ascii').strip()
 
 def logSHAs(local, remote):
-    print(f"Local SHA: \"${local}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/${local}")
-    print(f"Remote latest SHA: \"${remote}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/${remote}")
+    print(f"Local SHA: \"{local}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/{local}")
+    print(f"Remote latest SHA: \"{remote}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/{remote}")
 
 runGodbolt = False
 configureOnly = False
