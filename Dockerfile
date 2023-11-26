@@ -12,6 +12,8 @@ ARG CMAKE_SCRIPTS_DIRECTORY="C:\docker\scripts\cmake"
 
 FROM ${BASE_IMAGE}
 
+SHELL ["cmd", "/S", "/C"]
+
 RUN `
 	# Download node LTS
 	curl -SL --output nodejs.msi https://nodejs.org/dist/v20.9.0/node-v20.9.0-x64.msi `

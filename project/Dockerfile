@@ -7,6 +7,8 @@ ARG BUILD_SCRIPT_ARGS="-- -j1"
 
 FROM ${BASE_IMAGE}
 
+SHELL ["cmd", "/S", "/C"]
+
 ARG BUILD_SCRIPT_DIRECTORY
 
 RUN `
@@ -21,7 +23,7 @@ ARG BUILD_SCRIPT_ARGS
 
 # Build DXC
 RUN `
-	VsDevCmd.bat && powershell.exe -NoLogo -ExecutionPolicy Bypass -Command build.bat %BUILD_SCRIPT_ARGS%
+	build.bat %BUILD_SCRIPT_ARGS%
 
 # Generate dxc.local.properties
 RUN `
