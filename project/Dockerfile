@@ -1,6 +1,6 @@
 # escape=`
 
-ARG BASE_IMAGE=artifactory.devsh.eu/services/godbolt.base:latest
+ARG BASE_IMAGE=artifactory.devsh.eu/godbolt/base:latest
 
 ARG BUILD_SCRIPT_DIRECTORY="C:\docker"
 ARG BUILD_SCRIPT_ARGS="-- -j1"
@@ -23,7 +23,7 @@ ARG BUILD_SCRIPT_ARGS
 
 # Build DXC
 RUN `
-	build.bat %BUILD_SCRIPT_ARGS%
+	build.bat --on-init %BUILD_SCRIPT_ARGS%
 
 # Generate dxc.local.properties
 RUN `

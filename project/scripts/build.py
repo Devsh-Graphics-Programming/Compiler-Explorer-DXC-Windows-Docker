@@ -7,6 +7,7 @@ def logSHAs(local, remote):
     print(f"Local SHA: \"{local}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/{local}")
     print(f"Remote latest SHA: \"{remote}\", url: https://github.com/microsoft/DirectXShaderCompiler/commit/{remote}")
 
+onInit = False
 runGodbolt = False
 configureOnly = False
 hashCheckOnly = False
@@ -15,6 +16,8 @@ extraBuildVariables = ""
 try:
     # Parse command line arguments
     for arg in sys.argv:
+        if arg == "--on-init":
+            onInit = True
         if arg == "--run-godbolt":
             runGodbolt = True
         elif arg == "--configure-only":
@@ -25,6 +28,9 @@ try:
             # Capture everything after "--" considered as extra CMake build variables
             extraBuildVariables = " ".join(sys.argv[sys.argv.index(arg) + 1:])
             break
+
+    if onInit:
+        runGodbolt = False
 
     # Get the directory where this script is located
     scriptDirectory = os.path.dirname(os.path.abspath(__file__))

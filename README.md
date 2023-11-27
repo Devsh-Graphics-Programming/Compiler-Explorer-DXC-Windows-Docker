@@ -15,41 +15,32 @@ Make sure you have switched to `Containers for Windows`
 
 ![Containers for Windows](https://user-images.githubusercontent.com/65064509/152947300-affca592-35a7-4e4c-a7fc-2055ce1ba528.png)
 
-build [***base***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/Dockerfile) docker image
+clone the repository 
 
 ```powershell
-docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker -t godbolt.base
+git clone git@github.com:Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker.git
 ```
 
-build [***instance***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/project/Dockerfile) docker image
+enter the cloned directory and execute
 
 ```powershell
-docker build github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker#master:project -t godbolt.instance --build-arg BASE_IMAGE=godbolt.base --build-arg BUILD_SCRIPT_ARGS="-- -j4"
+docker compose up --build
 ```
 
-run your instance docker container with proxied 10240 port CE listens on
+once everything is built and run - open your browser with **http://localhost:10240** and enjoy.
 
-```powershell
-docker run -p 10240:10240 -it godbolt.instance --run-godbolt
-```
+### Build script options
 
-open your browser with **http://localhost:10240** and enjoy.
-
-### Image creation arguments
-
-There are a few OS-wide variables you can override for building images, you can also override `BUILD_SCRIPT_ARGS` to execute initial [***build***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/project/scripts/build.py) script with different set of arguments - refer to base & instance docker files and build script syntax bellow for more details.
-
-### Container creation arguments
-
-Containers created from the instance image have `ENTRYPOINT` set to application proxy batch script executing [***build***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/project/scripts/build.py) python script, the syntax is following
+Instance image and a container use proxy batch script executing [***build***](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-DXC-Windows-Docker/blob/master/project/scripts/build.py) python script with following syntax
 
 ```powershell
 <BUILD_SCRIPT_OPTIONS> -- <CMAKE_BUILD_OPTIONS>
 ```
 
-for example you may wish to run container with increased parallel build jobs and verbosity to build latest DXC but don't want to run compiler explorer with it hence you would execute
+you may wish to increase parallel build jobs and verbosity to build latest DXC while composing the application & running the container hence you would
 
 ```powershell
-docker run -p 10240:10240 -it godbolt.instance -- -j12 -v
+set BUILD_SCRIPT_ARGS="--run-godbolt -- -j12 -v"
 ```
 
+first and then execute the compose command.
