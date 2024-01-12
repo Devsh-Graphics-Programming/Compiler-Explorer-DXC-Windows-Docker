@@ -66,7 +66,7 @@ try:
         print("SHA hashes are identical, local repository won't get updated from remote!")
 
     if areHashesDifferent or not os.path.exists("./build"):
-        # Configure LLVM project
+        # Configure DXC project
         subprocess.run([
             "cmake",
             "-C", f"{GIT_DXC_REPOSITORY_PATH}/cmake/caches/PredefinedParams.cmake",

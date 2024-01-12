@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  shady:
+    image: artifactory.devsh.eu/godbolt/base:latest
+    container_name: devsh.godbolt.client.shady.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    profiles: ["client.shady"]
+    env_file: 
+      - ../../env/${THIS_PROJECT_PLATFORM}/.env
+    networks:
+      compose_default:
+    depends_on:
+      llvm:
+        condition: service_completed_successfully
+    entrypoint: ["build.bat", "client.shady.build"]
+    volumes:
+      - type: bind
+        source: ../../
+        target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
+
+networks:
+  compose_default:
+    external: true

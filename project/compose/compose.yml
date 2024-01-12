@@ -1,0 +1,35 @@
+version: '3'
+
+include:
+   - path:
+        - client/dxc/compose.yml
+     project_directory: client/dxc
+     env_file: env/${THIS_PROJECT_PLATFORM}/.env
+   - path:
+        - client/llvm/compose.yml
+     project_directory: client/llvm
+     env_file: env/${THIS_PROJECT_PLATFORM}/.env
+   - path:
+        - client/shady/compose.yml
+     project_directory: client/shady
+     env_file: env/${THIS_PROJECT_PLATFORM}/.env
+   - path:
+        - server/godbolt/compose.yml
+     project_directory: server/godbolt
+     env_file: env/${THIS_PROJECT_PLATFORM}/.env
+
+services:
+  base:
+    build:
+      context: ./docker
+    image: artifactory.devsh.eu/godbolt/base:latest
+    container_name: devsh.godbolt.base
+    env_file: 
+      - env/${THIS_PROJECT_PLATFORM}/.env
+    entrypoint: ["cmd"]
+    networks:
+      compose_default:
+
+networks:
+  compose_default:
+    external: true
