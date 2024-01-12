@@ -7,6 +7,3 @@
 [submodule "project/compose/client/shady/submodule"]
 	path = project/compose/client/shady/submodule
 	url = https://github.com/Devsh-Graphics-Programming/shady.git
-[submodule "project/compose/server/godbolt/submodule"]
-	path = project/compose/server/godbolt/submodule
-	url = https://giathub.com/compiler-explorer/compiler-explorer.git
