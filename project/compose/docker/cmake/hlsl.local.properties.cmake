@@ -21,7 +21,7 @@ group.dxc.versionFlag=--version
 group.dxc.groupName=DXC compilers
 
 compiler.dxc_upstream.exe=@DXC_EXECUTABLE@
-compiler.dxc_upstream.name=DXC from upstream
+compiler.dxc_upstream.name=DXC
 ]=]
 )
 

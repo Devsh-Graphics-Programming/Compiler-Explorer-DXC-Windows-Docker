@@ -23,7 +23,7 @@ try:
     cmd = [
         "npm", "run", "dev", "--"
     ]
-
+    
     lan = ""
 
     if os.path.exists(DXC_EXECUTABLE):
@@ -33,13 +33,11 @@ try:
         subprocess.run(["cmake", f"-DOUTPUT_HLP_PATH={HLSL_LOCAL_PROPERTIES}", f"-DDXC_EXECUTABLE={DXC_EXECUTABLE}", "-P", f"{HLSL_LOCAL_PROPERTIES_CMAKE}"], shell=True)
         lan += "hlsl"
 
-    if os.path.exists(VCC_EXECUTABLE):
-        CPP_LOCAL_PROPERTIES = os.path.normpath(os.path.join( GODBOLT_CONFIG_DIRECTORY, "c++.local.properties"))
-        CPP_LOCAL_PROPERTIES_CMAKE = os.path.normpath(os.path.join(CMAKE_SCRIPTS_DIRECTORY, "c++.local.properties.cmake"))
-        VCC_ISYSTEM = os.path.normpath(os.path.join(SHADY_INSTALL_DIRECTORY, "share/vcc/include/include")) # no idea why twice, issue with install target?
+    CPP_LOCAL_PROPERTIES = os.path.normpath(os.path.join( GODBOLT_CONFIG_DIRECTORY, "c++.local.properties"))
+    CPP_LOCAL_PROPERTIES_CMAKE = os.path.normpath(os.path.join(CMAKE_SCRIPTS_DIRECTORY, "c++.local.properties.cmake"))
 
-        subprocess.run(["cmake", f"-DOUTPUT_HLP_PATH={CPP_LOCAL_PROPERTIES}", f"-DVCC_ISYSTEM={VCC_ISYSTEM}", f"-DVCC_EXECUTABLE={VCC_EXECUTABLE}", "-P", f"{CPP_LOCAL_PROPERTIES_CMAKE}"], shell=True)
-        lan += ",c++"
+    subprocess.run(["cmake", f"-DOUTPUT_HLP_PATH={CPP_LOCAL_PROPERTIES}", f"-DSERVER=ON", "-P", f"{CPP_LOCAL_PROPERTIES_CMAKE}"], shell=True)
+    lan += ",c++"
 
     if LLVM_BIN not in os.environ["PATH"]:
         os.environ["PATH"] += os.pathsep + LLVM_BIN
@@ -47,6 +45,7 @@ try:
     if lan:
         cmd += ["--language", lan]
 
+    
     os.chdir(GIT_GODBOLT_REPOSITORY_PATH)
     subprocess.run(cmd, shell=True)
 

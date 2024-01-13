@@ -4,6 +4,7 @@ services:
   llvm:
     image: artifactory.devsh.eu/godbolt/base:latest
     container_name: devsh.godbolt.client.llvm.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    hostname: devsh.godbolt.client.llvm.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     profiles: ["client.llvm"]
     env_file: 
       - ../../env/${THIS_PROJECT_PLATFORM}/.env

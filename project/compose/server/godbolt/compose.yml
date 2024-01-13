@@ -4,14 +4,22 @@ services:
   godbolt:
     image: artifactory.devsh.eu/godbolt/base:latest
     container_name: devsh.godbolt.server.godbolt.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    hostname: devsh.godbolt.server.godbolt.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     profiles: ["server.godbolt"]
     env_file: 
       - ../../env/${THIS_PROJECT_PLATFORM}/.env
     networks:
       compose_default:
     depends_on:
-      base:
+      dxc:
         condition: service_completed_successfully
+        required: false
+      llvm:
+        condition: service_completed_successfully
+        required: false
+      shady:
+        condition: service_completed_successfully
+        required: false
     entrypoint: ["build.bat", "server.godbolt.run"]
     volumes:
       - type: bind

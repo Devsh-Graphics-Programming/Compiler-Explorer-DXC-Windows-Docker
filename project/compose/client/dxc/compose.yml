@@ -4,6 +4,7 @@ services:
   dxc:
     image: artifactory.devsh.eu/godbolt/base:latest
     container_name: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    hostname: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     profiles: ["client.dxc"]
     env_file: 
       - ../../env/${THIS_PROJECT_PLATFORM}/.env
