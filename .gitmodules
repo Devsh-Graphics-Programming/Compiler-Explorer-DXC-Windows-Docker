@@ -1,9 +1,1 @@
-[submodule "project/compose/client/dxc/submodule"]
-	path = project/compose/client/dxc/submodule
-	url = https://github.com/microsoft/DirectXShaderCompiler.git
-[submodule "project/compose/client/llvm/submodule"]
-	path = project/compose/client/llvm/submodule
-	url = https://github.com/llvm/llvm-project.git
-[submodule "project/compose/client/shady/submodule"]
-	path = project/compose/client/shady/submodule
-	url = https://github.com/Devsh-Graphics-Programming/shady.git
+
