@@ -14,10 +14,6 @@ include:
      project_directory: client/shady
      env_file: env/${THIS_PROJECT_PLATFORM}/.env
    - path:
-        - server/nginx/compose.yml
-     project_directory: server/nginx
-     env_file: env/${THIS_PROJECT_PLATFORM}/.env
-   - path:
         - server/godbolt/compose.yml
      project_directory: server/godbolt
      env_file: env/${THIS_PROJECT_PLATFORM}/.env
