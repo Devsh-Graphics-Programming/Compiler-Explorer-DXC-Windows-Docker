@@ -44,8 +44,8 @@ try:
 
     if lan:
         cmd += ["--language", lan]
-
     
+    # run godbolt proxy server
     os.chdir(GIT_GODBOLT_REPOSITORY_PATH)
     subprocess.run(cmd, shell=True)
 

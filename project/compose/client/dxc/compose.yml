@@ -2,22 +2,34 @@ version: '3'
 
 services:
   dxc:
-    image: artifactory.devsh.eu/godbolt/base:latest
+    build:
+      context: ../../
+      dockerfile: client/dxc/docker/Dockerfile
+      args:
+        DXC_REV_TARGET: ${DXC_REV_TARGET}
+        GIT_DXC_REPOSITORY_PATH: ${GIT_DXC_REPOSITORY_PATH}
+        DXC_BUILD_DIRECTORY: ${DXC_BUILD_DIRECTORY}
+        DXC_INSTALL_DIRECTORY: ${DXC_INSTALL_DIRECTORY}
+        THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
+        GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
+    image: artifactory.devsh.eu/godbolt/dxc:latest
     container_name: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     hostname: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
-    profiles: ["client.dxc"]
-    env_file: 
+    profiles: ["dxc"]
+    env_file:
       - ../../env/${THIS_PROJECT_PLATFORM}/.env
     networks:
       compose_default:
     depends_on:
       base:
         condition: service_completed_successfully
-    entrypoint: ["build.bat", "client.dxc.build"]
+    entrypoint: ["build.bat", "client.dxc.run"]
     volumes:
       - type: bind
         source: ../../
         target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
+    ports:
+      - "10242:10240"
 
 networks:
   compose_default:

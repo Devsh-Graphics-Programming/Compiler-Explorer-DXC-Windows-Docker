@@ -5,7 +5,7 @@ endif()
 if(DEFINED SERVER)
 	string(APPEND IMPL_CONTENT
 [=[
-compilers=devsh.godbolt.client.shady.windows.x86_64@10240
+compilers=devsh.godbolt.client.shady.windows.x86_64@443
 ]=]
 )
 	message(STATUS "SERVER = ON")

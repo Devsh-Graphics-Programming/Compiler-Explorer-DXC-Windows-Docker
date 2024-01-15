@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ../../
+      dockerfile: server/nginx/docker/Dockerfile
+      args:
+        NGINX_INSTALL_DIRECTORY: ${NGINX_INSTALL_DIRECTORY}
+        THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
+        SERVER_NAME: ${SERVER_NAME}
+    image: artifactory.devsh.eu/godbolt/nginx:latest
+    container_name: devsh.godbolt.server.nginx.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    hostname: devsh.godbolt.server.nginx.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    profiles: ["server.nginx"]
+    env_file:
+      - ../../env/${THIS_PROJECT_PLATFORM}/.env
+    networks:
+      compose_default:
+    depends_on:
+      base:
+        condition: service_completed_successfully
+    entrypoint: ["build.bat", "server.nginx.run"]
+    volumes:
+      - type: bind
+        source: ../../
+        target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 4G
+    ports:
+      - "80:80"
+      - "443:443"
+      - "10240:10240"
