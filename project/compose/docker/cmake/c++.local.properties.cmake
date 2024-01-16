@@ -3,12 +3,17 @@ if(NOT DEFINED OUTPUT_HLP_PATH)
 endif()
 
 if(DEFINED SERVER)
+	if(NOT DEFINED SERVER_NAME)
+		message(FATAL_ERROR "SERVER_NAME must be defined!")
+	endif()
+
 	string(APPEND IMPL_CONTENT
 [=[
-compilers=devsh.godbolt.client.shady.windows.x86_64@443
+compilers=@SERVER_NAME@@443
 ]=]
 )
 	message(STATUS "SERVER = ON")
+	message(STATUS "SERVER_NAME = ${SERVER_NAME}")
 else()
 	if(NOT DEFINED VCC_EXECUTABLE)
 		message(FATAL_ERROR "VCC_EXECUTABLE must be defined!")

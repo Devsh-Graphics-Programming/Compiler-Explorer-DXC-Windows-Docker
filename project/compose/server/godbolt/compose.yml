@@ -2,6 +2,14 @@ version: '3'
 
 services:
   godbolt:
+    build:
+      context: ../../
+      dockerfile: server/godbolt/docker/Dockerfile
+      args:
+        NGINX_PROXY_DXC_SERVER_NAME: ${NGINX_PROXY_DXC_SERVER_NAME}
+        NGINX_PROXY_VCC_SERVER_NAME: ${NGINX_PROXY_VCC_SERVER_NAME}
+        THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
+        GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
     image: artifactory.devsh.eu/godbolt/base:latest
     container_name: devsh.godbolt.server.godbolt.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     hostname: devsh.godbolt.server.godbolt.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
@@ -32,3 +40,5 @@ services:
           memory: 8G
     ports:
       - "10240:10240"
+      - "80:80"
+      - "443:443"
