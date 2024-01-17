@@ -18,6 +18,8 @@ services:
         SHADY_REV_TARGET: ${SHADY_REV_TARGET}
         THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
         GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
+    environment:
+      - NGINX_PROXY_SERVER_NAME=${NGINX_PROXY_VCC_SERVER_NAME}
     image: artifactory.devsh.eu/godbolt/shady:latest
     container_name: devsh.godbolt.client.shady.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     hostname: devsh.godbolt.client.shady.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}

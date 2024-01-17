@@ -1,27 +1,18 @@
 import os, subprocess, sys, argparse, socket
-
-def getLocalIPV4():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ipv4 = s.getsockname()[0] # Get the local IPv4 address
-        s.close()
-        
-        return ipv4
-    except socket.error:
-        return None
     
 def healthyCheck():
     try:
+        NGINX_PROXY_SERVER_NAME = os.environ.get('NGINX_PROXY_SERVER_NAME', '')
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(5)
-            s.connect((getLocalIPV4(), 10240))
+            s.connect((NGINX_PROXY_SERVER_NAME, 443))
         
-        print(f"Connected to localhost godbolt client instance, healthy check passed")
+        print(f"Connected to {NGINX_PROXY_SERVER_NAME} godbolt client instance, healthy check passed")
 
         return True
     except (socket.error, socket.timeout):
-        print(f"Excpetion caught while trying to connect to localhost godbolt client instance, healthy check didnt pass: \"{socket.error}\"")
+        print(f"Excpetion caught while trying to connect to {NGINX_PROXY_SERVER_NAME} godbolt client instance, healthy check didnt pass: \"{socket.error}\"")
         return False
 
 try:

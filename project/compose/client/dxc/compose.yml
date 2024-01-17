@@ -12,6 +12,8 @@ services:
         DXC_INSTALL_DIRECTORY: ${DXC_INSTALL_DIRECTORY}
         THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
         GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
+    environment:
+      - NGINX_PROXY_SERVER_NAME=${NGINX_PROXY_DXC_SERVER_NAME}
     image: artifactory.devsh.eu/godbolt/dxc:latest
     container_name: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
     hostname: devsh.godbolt.client.dxc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
