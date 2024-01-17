@@ -40,11 +40,12 @@ compiler.vcc_upstream.notification=The VCC has been compiled from following <a h
 
 compiler.vcc_upstream.exe=@VCC_EXECUTABLE@
 compiler.vcc_upstream.name=VCC
-compiler.vcc_upstream.options="-isystem@VCC_ISYSTEM@"
+compiler.vcc_upstream.options=--entry-point main -isystem@VCC_ISYSTEM@
 ]=]
 )
 	message(STATUS "VCC_EXECUTABLE = \"${VCC_EXECUTABLE}\"")
 	message(STATUS "VCC_ISYSTEM = \"${VCC_ISYSTEM}\"")
+	string(REPLACE "\\" "/" VCC_ISYSTEM "${VCC_ISYSTEM}")
 
 	execute_process(COMMAND git -C "$ENV{GIT_SHADY_DIRECTORY}" rev-parse HEAD
 		RESULT_VARIABLE _RESULT
