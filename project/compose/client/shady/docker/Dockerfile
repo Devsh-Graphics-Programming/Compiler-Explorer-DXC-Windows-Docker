@@ -92,6 +92,10 @@ COPY docker\cmake\c++.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\c
 ARG GIT_GODBOLT_REPOSITORY_PATH
 
 RUN `
-	cmake -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\c++.local.properties" -DVCC_ISYSTEM="%SHADY_INSTALL_DIRECTORY%\share\vcc\include\include" -DVCC_EXECUTABLE="%SHADY_INSTALL_DIRECTORY%\bin\vcc.exe" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\c++.local.properties.cmake"
+	cmake -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\c++.local.properties" -DVCC_ISYSTEM="%SHADY_INSTALL_DIRECTORY%\share\vcc\include\include" -DVCC_EXECUTABLE="%SHADY_INSTALL_DIRECTORY%\bin\vcc.exe" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\c++.local.properties.cmake" `
+	`
+	&& cmake -E rm -Rf -- "%GIT_GODBOLT_REPOSITORY_PATH%\examples\c++"
+
+COPY client\shady\docker\examples\default.cpp ${GIT_GODBOLT_REPOSITORY_PATH}\examples\c++\default.cpp
 
 ENTRYPOINT ["VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
