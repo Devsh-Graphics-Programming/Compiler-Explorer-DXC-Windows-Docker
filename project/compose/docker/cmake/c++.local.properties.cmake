@@ -40,7 +40,7 @@ compiler.vcc_upstream.notification=The VCC has been compiled from following <a h
 
 compiler.vcc_upstream.exe=@VCC_EXECUTABLE@
 compiler.vcc_upstream.name=VCC
-compiler.vcc_upstream.options=--entry-point main -isystem@VCC_ISYSTEM@
+compiler.vcc_upstream.options=-isystem@VCC_ISYSTEM@
 ]=]
 )
 	message(STATUS "VCC_EXECUTABLE = \"${VCC_EXECUTABLE}\"")
