@@ -20,13 +20,13 @@ services:
       compose_default:
     depends_on:
       dxc:
-        condition: service_completed_successfully
+        condition: service_healthy
         required: false
       llvm:
         condition: service_completed_successfully
         required: false
       shady:
-        condition: service_completed_successfully
+        condition: service_healthy
         required: false
     entrypoint: ["build.bat", "server.godbolt.run"]
     volumes:

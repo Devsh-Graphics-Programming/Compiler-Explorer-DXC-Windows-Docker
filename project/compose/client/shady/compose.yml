@@ -36,6 +36,11 @@ services:
         target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
     ports:
       - "10241:10240"
+    healthcheck:
+      test: ["CMD", "build.bat", "server.godbolt.run", "--healthyCheck"]
+      interval: 20s
+      timeout: 15s
+      retries: 6
 
 networks:
   compose_default:
