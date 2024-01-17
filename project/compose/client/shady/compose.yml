@@ -2,9 +2,28 @@ version: '3'
 
 services:
   shady:
-    image: artifactory.devsh.eu/godbolt/base:latest
+    build:
+      context: ../../
+      dockerfile: client/shady/docker/Dockerfile
+      args:
+        GIT_CJSON: ${GIT_CJSON}
+        GIT_CJSON_BUILD_DIRECTORY: ${GIT_CJSON_BUILD_DIRECTORY}
+        CJSON_INSTALL_DIRECTORY: ${CJSON_INSTALL_DIRECTORY}
+        GIT_SPIRV_HEADERS: ${GIT_SPIRV_HEADERS}
+        GIT_SPIRV_BUILD_DIRECTORY: ${GIT_SPIRV_BUILD_DIRECTORY}
+        SPIRV_HEADERS_INSTALL_DIRECTORY: ${SPIRV_HEADERS_INSTALL_DIRECTORY}
+        GIT_SHADY_DIRECTORY: ${GIT_SHADY_DIRECTORY}
+        SHADY_BUILD_DIRECTORY: ${SHADY_BUILD_DIRECTORY}
+        SHADY_INSTALL_DIRECTORY: ${SHADY_INSTALL_DIRECTORY}
+        SHADY_REV_TARGET: ${SHADY_REV_TARGET}
+        THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
+        GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
+    environment:
+      - NGINX_PROXY_SERVER_NAME=${NGINX_PROXY_VCC_SERVER_NAME}
+    image: artifactory.devsh.eu/godbolt/shady:latest
     container_name: devsh.godbolt.client.shady.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
-    profiles: ["client.shady"]
+    hostname: devsh.godbolt.client.shady.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    profiles: ["shady"]
     env_file: 
       - ../../env/${THIS_PROJECT_PLATFORM}/.env
     networks:
@@ -12,11 +31,18 @@ services:
     depends_on:
       llvm:
         condition: service_completed_successfully
-    entrypoint: ["build.bat", "client.shady.build"]
+    entrypoint: ["build.bat", "client.shady.run"]
     volumes:
       - type: bind
         source: ../../
         target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
+    ports:
+      - "10241:10240"
+    healthcheck:
+      test: ["CMD", "build.bat", "server.godbolt.run", "--healthyCheck"]
+      interval: 20s
+      timeout: 15s
+      retries: 6
 
 networks:
   compose_default:

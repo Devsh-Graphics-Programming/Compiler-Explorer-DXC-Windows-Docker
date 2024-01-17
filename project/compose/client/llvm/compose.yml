@@ -2,9 +2,18 @@ version: '3'
 
 services:
   llvm:
-    image: artifactory.devsh.eu/godbolt/base:latest
+    build:
+      context: ../../
+      dockerfile: client/llvm/docker/Dockerfile
+      args:
+        LLVM_REV_TARGET: ${LLVM_REV_TARGET}
+        GIT_LLVM_DIRECTORY: ${GIT_LLVM_DIRECTORY}
+        LLVM_BUILD_DIRECTORY: ${LLVM_BUILD_DIRECTORY}
+        LLVM_INSTALL_DIRECTORY: ${LLVM_INSTALL_DIRECTORY}
+    image: artifactory.devsh.eu/godbolt/llvm:latest
     container_name: devsh.godbolt.client.llvm.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
-    profiles: ["client.llvm"]
+    hostname: devsh.godbolt.client.llvm.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    profiles: ["llvm", "shady"]
     env_file: 
       - ../../env/${THIS_PROJECT_PLATFORM}/.env
     networks:
@@ -12,7 +21,7 @@ services:
     depends_on:
       base:
         condition: service_completed_successfully
-    entrypoint: ["build.bat", "client.llvm.build"]
+    entrypoint: ["cmd"]
     volumes:
       - type: bind
         source: ../../
