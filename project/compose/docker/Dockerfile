@@ -65,6 +65,13 @@ RUN `
 	`
 	&& del /q vs_buildtools.exe
 
+RUN `
+	curl -SL --output vc_redist.x64.exe https://aka.ms/vs/17/release/vc_redist.x64.exe `
+	`
+	&& vc_redist.x64.exe /install /quiet /norestart `
+	`
+	&& del /q vc_redist.x64.exe
+
 ARG VULKAN_SDK_INSTALL_DIRECTORY
 
 RUN `
