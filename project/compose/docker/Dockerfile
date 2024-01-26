@@ -19,6 +19,7 @@ ARG THIS_PROJECT_DEPENDENCY_BUILD_DIRECTORY
 ARG GIT_INSTALL_DIRECTORY
 ARG PYTHON_INSTALL_DIRECTORY
 ARG VS_INSTALL_DIRECTORY
+ARG VULKAN_SDK_INSTALL_DIRECTORY
 ARG VS_DEV_CMD_DIRECTORY
 ARG NGINX_INSTALL_DIRECTORY
 
@@ -64,6 +65,17 @@ RUN `
 	`
 	&& del /q vs_buildtools.exe
 
+ARG VULKAN_SDK_INSTALL_DIRECTORY
+
+RUN `
+	# VulkanSDK
+	`
+	curl -SL --output VulkanSDK-Installer.exe https://sdk.lunarg.com/sdk/download/1.3.268.0/windows/VulkanSDK-1.3.268.0-Installer.exe `
+	`
+	&& VulkanSDK-Installer.exe install --root "%VULKAN_SDK_INSTALL_DIRECTORY%" --default-answer --accept-licenses --confirm-command `
+	`
+	&& del /q VulkanSDK-Installer.exe
+
 ARG PYTHON_INSTALL_DIRECTORY
 	
 RUN `
@@ -97,7 +109,7 @@ RUN `
 	`
 	mkdir "%GIT_GODBOLT_REPOSITORY_PATH%" `
 	`
-	&& git clone https://github.com/compiler-explorer/compiler-explorer.git "%GIT_GODBOLT_REPOSITORY_PATH%" `
+	&& git clone https://github.com/Devsh-Graphics-Programming/compiler-explorer.git "%GIT_GODBOLT_REPOSITORY_PATH%" `
 	`
 	&& setx GIT_GODBOLT_REPOSITORY_PATH "%GIT_GODBOLT_REPOSITORY_PATH%" /M `
 	`
