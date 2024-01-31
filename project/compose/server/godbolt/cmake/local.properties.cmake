@@ -14,7 +14,7 @@ foreach(SERVER IN LISTS SERVER_NAME)
 	message(STATUS "SERVER_NAME = ${SERVER_NAME}")
 	list(APPEND COMPILERS "${SERVER_NAME}@443")
 endforeach()
-string(REPLACE ";" "," COMPILERS "${COMPILERS}")
+string(REPLACE ";" ":" COMPILERS "${COMPILERS}")
 
 message(STATUS "Creating \"${OUTPUT_HLP_PATH}\"")
 
