@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  nsc:
+    build:
+      context: ../../
+      dockerfile: client/nabla/docker/Dockerfile
+      args:
+        NABLA_REV_TARGET: ${NABLA_REV_TARGET}
+        GIT_NABLA_DIRECTORY: ${GIT_NABLA_DIRECTORY}
+        NABLA_BUILD_DIRECTORY: ${NABLA_BUILD_DIRECTORY}
+        NABLA_INSTALL_DIRECTORY: ${NABLA_INSTALL_DIRECTORY}
+        THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
+        GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
+    environment:
+      - NGINX_PROXY_SERVER_NAME=${NGINX_PROXY_NSC_SERVER_NAME}
+    image: artifactory.devsh.eu/godbolt/nsc:latest
+    container_name: devsh.godbolt.client.nsc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    hostname: devsh.godbolt.client.nsc.${THIS_PROJECT_PLATFORM}.${THIS_PROJECT_ARCH}
+    profiles: ["nsc"]
+    env_file: 
+      - ../../env/${THIS_PROJECT_PLATFORM}/.env
+    networks:
+      compose_default:
+    depends_on:
+      base:
+        condition: service_completed_successfully
+    entrypoint: ["build.bat", "client.nabla.run"]
+    volumes:
+      - type: bind
+        source: ../../
+        target: ${THIS_PROJECT_CLIENT_BIND_DIRECTORY}
+    ports:
+      - "10243:10240"
+    healthcheck:
+      test: ["CMD", "build.bat", "server.godbolt.run", "--healthyCheck"]
+      interval: 20s
+      timeout: 15s
+      retries: 6
+
+networks:
+  compose_default:
+    external: true

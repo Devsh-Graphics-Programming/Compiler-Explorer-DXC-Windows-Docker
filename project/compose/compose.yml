@@ -14,6 +14,10 @@ include:
      project_directory: client/shady
      env_file: env/${THIS_PROJECT_PLATFORM}/.env
    - path:
+        - client/nabla/compose.yml
+     project_directory: client/nabla
+     env_file: env/${THIS_PROJECT_PLATFORM}/.env
+   - path:
         - server/godbolt/compose.yml
      project_directory: server/godbolt
      env_file: env/${THIS_PROJECT_PLATFORM}/.env

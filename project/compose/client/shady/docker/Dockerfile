@@ -87,7 +87,7 @@ RUN	`
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
-COPY docker\cmake\c++.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\c++.local.properties.cmake
+COPY client\shady\docker\cmake\c++.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\c++.local.properties.cmake
 
 ARG GIT_GODBOLT_REPOSITORY_PATH
 

@@ -44,7 +44,7 @@ RUN `
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
-COPY docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\hlsl.local.properties.cmake
+COPY client\dxc\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\hlsl.local.properties.cmake
 
 ARG GIT_GODBOLT_REPOSITORY_PATH
 

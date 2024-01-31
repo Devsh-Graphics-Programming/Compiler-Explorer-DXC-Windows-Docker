@@ -8,6 +8,7 @@ services:
       args:
         NGINX_PROXY_DXC_SERVER_NAME: ${NGINX_PROXY_DXC_SERVER_NAME}
         NGINX_PROXY_VCC_SERVER_NAME: ${NGINX_PROXY_VCC_SERVER_NAME}
+        NGINX_PROXY_NSC_SERVER_NAME: ${NGINX_PROXY_NSC_SERVER_NAME}
         THIS_PROJECT_SCRIPTS_DIRECTORY: ${THIS_PROJECT_SCRIPTS_DIRECTORY}
         GIT_GODBOLT_REPOSITORY_PATH: ${GIT_GODBOLT_REPOSITORY_PATH}
     image: artifactory.devsh.eu/godbolt/base:latest
@@ -28,6 +29,9 @@ services:
       shady:
         condition: service_healthy
         required: false
+      nsc:
+        condition: service_healthy
+        required: false
     entrypoint: ["build.bat", "server.godbolt.run"]
     volumes:
       - type: bind
@@ -37,7 +41,7 @@ services:
       resources:
         limits:
           cpus: '0.80'
-          memory: 8G
+          memory: 6G
     ports:
       - "10240:10240"
       - "80:80"
