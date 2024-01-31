@@ -11,8 +11,8 @@ compilers=@COMPILERS@
 message(STATUS "SERVER = ON")
 
 foreach(SERVER IN LISTS SERVER_NAME)
-	message(STATUS "SERVER_NAME = ${SERVER_NAME}")
-	list(APPEND COMPILERS "${SERVER_NAME}@443")
+	message(STATUS "SERVER_NAME = ${SERVER}")
+	list(APPEND COMPILERS "${SERVER}@443")
 endforeach()
 string(REPLACE ";" ":" COMPILERS "${COMPILERS}")
 
