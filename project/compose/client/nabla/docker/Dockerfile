@@ -2,6 +2,7 @@
 
 ARG BASE_IMAGE=artifactory.devsh.eu/godbolt/base:latest
 
+ARG _NBL_JOBS_AMOUNT_
 ARG NABLA_REV_TARGET
 ARG GIT_NABLA_DIRECTORY
 ARG NABLA_BUILD_DIRECTORY
@@ -42,9 +43,10 @@ RUN `
 
 ARG NABLA_BUILD_DIRECTORY
 ARG NABLA_INSTALL_DIRECTORY
+ARG _NBL_JOBS_AMOUNT_
 
 RUN	`
-	cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF
+	cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_%
 	
 RUN	`
 	cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release
