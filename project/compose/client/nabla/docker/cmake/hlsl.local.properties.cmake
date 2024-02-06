@@ -7,9 +7,13 @@ string(APPEND IMPL_CONTENT
 compilers=&dxc
 
 defaultCompiler=nsc_release_upstream
-supportsBinary=false
-compilerType=hlsl
-instructionSet=llvm
+supportsBinary=true
+supportsBinaryObject=true
+compilerType=vulkan-spirv
+needsMulti=false
+supportsLibraryCodeFilter=true
+disassemblerPath=@SPIRV_DIS_EXE@
+demangler=@LLVM_CXX_FILT_EXE@
 
 group.dxc.compilers=nsc_release_upstream:nsc_debug_upstream
 group.dxc.includeFlag=-I
@@ -19,10 +23,18 @@ group.dxc.groupName=NSC compilers
 compiler.nsc_release_upstream.exe=@NSC_RELEASE_EXECUTABLE@
 compiler.nsc_release_upstream.name=NSC (Release)
 compiler.nsc_release_upstream.notification=The NSC (Release) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@NABLA_SHA@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
+compiler.nsc_release_upstream.supportsExecute=false
+compiler.nsc_release_upstream.options=--target spirv
+compiler.nsc_release_upstream.disassemblerPath=@SPIRV_DIS_EXE@
+compiler.nsc_release_upstream.demangler=@LLVM_CXX_FILT_EXE@
 
 compiler.nsc_debug_upstream.exe=@NSC_DEBUG_EXECUTABLE@
 compiler.nsc_debug_upstream.name=NSC (Debug)
 compiler.nsc_debug_upstream.notification=The NSC (Debug) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@NABLA_SHA@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
+compiler.nsc_debug_upstream.supportsExecute=false
+compiler.nsc_debug_upstream.options=--target spirv
+compiler.nsc_debug_upstream.disassemblerPath=@SPIRV_DIS_EXE@
+compiler.nsc_debug_upstream.demangler=@LLVM_CXX_FILT_EXE@
 ]=]
 )
 
@@ -54,6 +66,20 @@ if("${_RESULT}" STREQUAL "0")
 else()
 	message(FATAL_ERROR "Could not parse local HEAD SHA of \"$ENV{GIT_NABLA_DIRECTORY}\" repository!")
 endif()
+
+find_program(SPIRV_DIS_EXE
+	NAMES spirv-dis
+	HINTS "$ENV{VULKAN_SDK_INSTALL_DIRECTORY}/Bin"
+	REQUIRED
+)
+message(STATUS "SPIRV_DIS_EXE = \"${SPIRV_DIS_EXE}\"")
+
+find_program(LLVM_CXX_FILT_EXE
+	NAMES llvm-cxxfilt
+	HINTS "$ENV{LLVM_INSTALL_DIRECTORY}/bin"
+	REQUIRED
+)
+message(STATUS "LLVM_CXX_FILT_EXE = \"${LLVM_CXX_FILT_EXE}\"")
 
 message(STATUS "Creating \"${OUTPUT_HLP_PATH}\"")
 
