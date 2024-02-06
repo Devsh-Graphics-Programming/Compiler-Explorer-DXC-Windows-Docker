@@ -46,13 +46,13 @@ ARG NABLA_INSTALL_DIRECTORY
 ARG _NBL_JOBS_AMOUNT_
 
 RUN	`
-	cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_%
-	
-RUN	`
-	cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release
-
-RUN	`
-	cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Debug
+	cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
+ 	`
+	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release `
+ 	`
+	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Debug `
+ 	`
+  	&& cmake -E rm -Rf -- "%GIT_NABLA_DIRECTORY%\build\static"
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
