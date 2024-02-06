@@ -1,6 +1,6 @@
 # escape=`
 
-ARG BASE_IMAGE=artifactory.devsh.eu/godbolt/base:latest
+ARG BASE_IMAGE=artifactory.devsh.eu/godbolt/llvm:latest
 
 ARG _NBL_JOBS_AMOUNT_
 ARG NABLA_REV_TARGET
