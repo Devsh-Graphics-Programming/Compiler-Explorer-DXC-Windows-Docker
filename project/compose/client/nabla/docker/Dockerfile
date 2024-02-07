@@ -53,13 +53,24 @@ RUN	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Debug `
  	`
   	&& cmake -E rm -Rf -- "%GIT_NABLA_DIRECTORY%\build"
- 
+
+
+ARG GIT_GODBOLT_REPOSITORY_PATH
+
+RUN `
+	# Compiler-Explorer update
+	`
+	cd "%GIT_GODBOLT_REPOSITORY_PATH%" `
+	`
+	&& git fetch --depth=1 -- origin main `
+	`
+	&& git checkout -f origin/main  `
+	`
+	&& git clean -fdx `
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
 COPY client\nabla\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\hlsl.local.properties.cmake
-
-ARG GIT_GODBOLT_REPOSITORY_PATH
 
 RUN `
 	cmake -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\hlsl.local.properties" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\hlsl.local.properties.cmake"
