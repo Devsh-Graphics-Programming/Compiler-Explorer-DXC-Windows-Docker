@@ -66,7 +66,13 @@ RUN `
 	`
 	&& git checkout -f origin/main ` 
 	`
- 	&& npm install
+ 	&& npm install `
+	`
+	&& npm install webpack -g `
+	`
+	&& npm install webpack-cli -g `
+	`
+	&& npm update webpack
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
