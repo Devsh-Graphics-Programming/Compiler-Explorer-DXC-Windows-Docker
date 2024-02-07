@@ -24,7 +24,7 @@ compiler.nsc_release_upstream.exe=@NSC_RELEASE_EXECUTABLE@
 compiler.nsc_release_upstream.name=NSC (Release)
 compiler.nsc_release_upstream.notification=The NSC (Release) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@NABLA_SHA@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
 compiler.nsc_release_upstream.supportsExecute=false
-compiler.nsc_release_upstream.options=--target spirv
+compiler.nsc_release_upstream.options=
 compiler.nsc_release_upstream.disassemblerPath=@SPIRV_DIS_EXE@
 compiler.nsc_release_upstream.demangler=
 
@@ -32,7 +32,7 @@ compiler.nsc_debug_upstream.exe=@NSC_DEBUG_EXECUTABLE@
 compiler.nsc_debug_upstream.name=NSC (Debug)
 compiler.nsc_debug_upstream.notification=The NSC (Debug) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@NABLA_SHA@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
 compiler.nsc_debug_upstream.supportsExecute=false
-compiler.nsc_debug_upstream.options=--target spirv
+compiler.nsc_debug_upstream.options=
 compiler.nsc_debug_upstream.disassemblerPath=@SPIRV_DIS_EXE@
 compiler.nsc_debug_upstream.demangler=
 ]=]
