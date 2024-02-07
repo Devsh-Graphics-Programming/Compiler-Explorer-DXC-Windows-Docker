@@ -58,15 +58,13 @@ RUN	`
 ARG GIT_GODBOLT_REPOSITORY_PATH
 
 RUN `
-	# Compiler-Explorer update
+	# Compiler-Explorer update (TMP!!!!)
 	`
 	cd "%GIT_GODBOLT_REPOSITORY_PATH%" `
 	`
 	&& git fetch --depth=1 -- origin main `
 	`
-	&& git checkout -f origin/main  `
-	`
-	&& git clean -fdx `
+	&& git checkout -f origin/main
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
