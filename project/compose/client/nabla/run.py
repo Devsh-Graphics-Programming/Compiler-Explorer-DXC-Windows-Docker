@@ -8,8 +8,8 @@ try:
     GIT_NABLA_DIRECTORY = os.environ.get('GIT_NABLA_DIRECTORY', '')
     GIT_GODBOLT_REPOSITORY_PATH = os.environ.get('GIT_GODBOLT_REPOSITORY_PATH', '')
 
-    sha = getGitRevisionHash(GIT_NABLA_DIRECTORY, "HEAD")
-    logSHA(sha, "https://github.com/Devsh-Graphics-Programming/Nabla.git")
+    # sha = getGitRevisionHash(GIT_NABLA_DIRECTORY, "HEAD")
+    # logSHA(sha, "https://github.com/Devsh-Graphics-Programming/Nabla.git")
     
     cmd = [
         "npm", "run", "dev", "--", "--language", "hlsl"
