@@ -6,6 +6,7 @@ services:
       context: ../../
       dockerfile: client/nabla/docker/Dockerfile
       args:
+        VS_VCVARSALL_DIRECTORY: ${VS_VCVARSALL_DIRECTORY}
         NABLA_REV_TARGET: ${NABLA_REV_TARGET}
         GIT_NABLA_DIRECTORY: ${GIT_NABLA_DIRECTORY}
         NABLA_BUILD_DIRECTORY: ${NABLA_BUILD_DIRECTORY}

@@ -2,6 +2,7 @@
 
 ARG BASE_IMAGE=artifactory.devsh.eu/godbolt/base:latest
 
+ARG VS_VCVARSALL_DIRECTORY
 ARG _NBL_JOBS_AMOUNT_
 ARG NABLA_REV_TARGET
 ARG GIT_NABLA_DIRECTORY
@@ -10,15 +11,22 @@ ARG NABLA_INSTALL_DIRECTORY
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 ARG GIT_GODBOLT_REPOSITORY_PATH
 
-FROM ${BASE_IMAGE}
-
+FROM ${BASE_IMAGE} as NBL_I_CMAKE_IMAGE
 SHELL ["cmd", "/S", "/C"]
 
 RUN `
-	powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))	
+	# CMake override
+	`
+	curl -SL --output cmake.zip https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-windows-x86_64.zip `
+	`
+	&& mkdir "./cmake" `
+	`
+	&& tar -xf cmake.zip -C "./cmake" `
+	`
+	&& del /q cmake.zip
 
-RUN `
-	choco install -y strawberryperl --version 5.28.2.1
+FROM NBL_I_CMAKE_IMAGE as NBL_I_BUILD_IMAGE
+SHELL ["cmd", "/S", "/C"]
 
 ARG GIT_NABLA_DIRECTORY
 ARG NABLA_REV_TARGET
@@ -41,44 +49,54 @@ RUN `
 	`
 	&& cmake -DNBL_BUILD_EXAMPLES=OFF -P "%GIT_NABLA_DIRECTORY%\cmake\submodules\update.cmake"
 
+ARG VS_VCVARSALL_DIRECTORY
 ARG NABLA_BUILD_DIRECTORY
 ARG NABLA_INSTALL_DIRECTORY
 ARG _NBL_JOBS_AMOUNT_
 
+ENV NBL_CI_MODE=ON
+ENV NBL_CI_BUILD_DIRECTORY=build/static
+
 RUN	`
-	cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
+	cd cmake/cmake-3.29.2-windows-x86_64/bin `
+	`
+	&& cmake --version `
+	`
+	&& "%VS_VCVARSALL_DIRECTORY%\vcvarsall.bat" x64 `
+	`
+	&& cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
 	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release `
 	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Debug `
- 	`
+	`
+	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Release --component Runtimes `
+	`
+	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Release --component Executables `
+	`
+	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Debug --component Runtimes `
+	`
+	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Debug --component Executables `
+	`
   	&& cmake -E rm -Rf -- "%GIT_NABLA_DIRECTORY%\build"
 
+FROM ${BASE_IMAGE}
+SHELL ["cmd", "/S", "/C"]
 
-ARG GIT_GODBOLT_REPOSITORY_PATH
+ARG GIT_NABLA_DIRECTORY
+ARG NABLA_REV_TARGET
 
-RUN `
-	# Compiler-Explorer update (TMP!!!!)
-	`
-	cd "%GIT_GODBOLT_REPOSITORY_PATH%" `
-	`
-	&& git fetch --depth=1 -- origin main `
-	`
-	&& git checkout -f origin/main ` 
-	`
- 	&& npm install `
-	`
-	&& npm install webpack -g `
-	`
-	&& npm install webpack-cli -g `
-	`
-	&& npm update webpack
+COPY --from=NBL_I_BUILD_IMAGE ${GIT_NABLA_DIRECTORY}\install\ ${GIT_NABLA_DIRECTORY}\install\
 
 ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
 COPY client\nabla\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\hlsl.local.properties.cmake
 
 RUN `
-	cmake -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\hlsl.local.properties" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\hlsl.local.properties.cmake"
+	cd "%GIT_NABLA_DIRECTORY%/install" `
+	`
+	&& dir `
+	`
+	&& cmake -DNABLA_REV_TARGET="%NABLA_REV_TARGET%" -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\hlsl.local.properties" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\hlsl.local.properties.cmake"
 
 ENTRYPOINT ["VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
