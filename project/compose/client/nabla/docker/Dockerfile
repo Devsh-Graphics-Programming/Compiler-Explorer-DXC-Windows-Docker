@@ -92,6 +92,8 @@ ARG THIS_PROJECT_SCRIPTS_DIRECTORY
 
 COPY client\nabla\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPTS_DIRECTORY}\cmake\hlsl.local.properties.cmake
 
+ARG GIT_GODBOLT_REPOSITORY_PATH
+
 RUN `
 	cd "%GIT_NABLA_DIRECTORY%/install" `
 	`
