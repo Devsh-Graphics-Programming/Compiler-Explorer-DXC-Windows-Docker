@@ -95,6 +95,23 @@ COPY client\nabla\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPT
 ARG GIT_GODBOLT_REPOSITORY_PATH
 
 RUN `
+	# Compiler-Explorer update (TMP)
+	`
+	cd "%GIT_GODBOLT_REPOSITORY_PATH%" `
+	`
+	&& git fetch --depth=1 -- origin main `
+	`
+	&& git checkout -f origin/main ` 
+	`
+ 	&& npm install `
+	`
+	&& npm install webpack -g `
+	`
+	&& npm install webpack-cli -g `
+	`
+	&& npm update webpack
+
+RUN `
 	cd "%GIT_NABLA_DIRECTORY%/install" `
 	`
 	&& dir `
