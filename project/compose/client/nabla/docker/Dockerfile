@@ -95,27 +95,6 @@ COPY client\nabla\docker\cmake\hlsl.local.properties.cmake ${THIS_PROJECT_SCRIPT
 ARG GIT_GODBOLT_REPOSITORY_PATH
 
 RUN `
-	# Compiler-Explorer update (TMP)
-	`
-	cd "%GIT_GODBOLT_REPOSITORY_PATH%" `
-	`
-	&& git fetch --depth=1 -- origin main `
-	`
-	&& git checkout -f origin/main ` 
-	`
- 	&& npm install `
-	`
-	&& npm install webpack -g `
-	`
-	&& npm install webpack-cli -g `
-	`
-	&& npm update webpack
-
-RUN `
-	cd "%GIT_NABLA_DIRECTORY%/install" `
-	`
-	&& dir `
-	`
-	&& cmake -DNABLA_REV_TARGET="%NABLA_REV_TARGET%" -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\hlsl.local.properties" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\hlsl.local.properties.cmake"
+	cmake -DNABLA_REV_TARGET="%NABLA_REV_TARGET%" -DOUTPUT_HLP_PATH="%GIT_GODBOLT_REPOSITORY_PATH%\etc\config\hlsl.local.properties" -P "%THIS_PROJECT_SCRIPTS_DIRECTORY%\cmake\hlsl.local.properties.cmake"
 
 ENTRYPOINT ["VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
