@@ -8,8 +8,8 @@ try:
     GIT_DXC_REPOSITORY_PATH = os.environ.get('GIT_DXC_REPOSITORY_PATH', '')
     GIT_GODBOLT_REPOSITORY_PATH = os.environ.get('GIT_GODBOLT_REPOSITORY_PATH', '')
 
-    sha = getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD")
-    logSHA(sha, "https://github.com/microsoft/DirectXShaderCompiler.git")
+    # sha = getGitRevisionHash(GIT_DXC_REPOSITORY_PATH, "HEAD")
+    # logSHA(sha, "https://github.com/microsoft/DirectXShaderCompiler.git")
 
     cmd = [
         "npm", "run", "dev", "--", "--language", "hlsl"
