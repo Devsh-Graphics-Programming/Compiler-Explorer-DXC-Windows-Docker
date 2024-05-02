@@ -22,11 +22,11 @@ group.dxc.groupName=DXC compilers
 
 compiler.dxc_release_upstream.exe=@DXC_RELEASE_EXECUTABLE@
 compiler.dxc_release_upstream.name=DXC (Release)
-compiler.dxc_release_upstream.notification=The DXC (Release) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@DXC_REV_TARGET@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
+compiler.dxc_release_upstream.notification=The DXC (Release) has been compiled from following <a href="https://github.com/microsoft/DirectXShaderCompiler/commit/@DXC_REV_TARGET@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
 
 compiler.dxc_debug_upstream.exe=@DXC_DEBUG_EXECUTABLE@
 compiler.dxc_debug_upstream.name=DXC (Debug)
-compiler.dxc_debug_upstream.notification=The DXC (Debug) has been compiled from following <a href="https://github.com/Devsh-Graphics-Programming/Nabla/commit/@DXC_REV_TARGET@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
+compiler.dxc_debug_upstream.notification=The DXC (Debug) has been compiled from following <a href="https://github.com/microsoft/DirectXShaderCompiler/commit/@DXC_REV_TARGET@" target="_blank" rel="noopener noreferrer">commit<sup><small class="fas fa-external-link-alt opens-new-window" title="Opens the commit in a new window"></small></sup></a>.
 ]=]
 )
 
