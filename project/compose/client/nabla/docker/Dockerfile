@@ -70,6 +70,12 @@ RUN	`
 	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Debug `
 	`
+	&& cd  "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" `
+	`
+	&& ctest -C Release --stop-on-failure `
+	`
+	&& ctest -C Debug --stop-on-failure `
+	`
 	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Release --component Runtimes `
 	`
 	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Release --component Executables `
