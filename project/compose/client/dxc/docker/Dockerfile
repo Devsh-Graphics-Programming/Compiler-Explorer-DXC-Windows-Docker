@@ -43,9 +43,7 @@ RUN `
 	`
 	&& cmake --install "%DXC_BUILD_DIRECTORY%\tools\clang\tools\dxcompiler" --prefix "%GIT_DXC_REPOSITORY_PATH%\install\debug" --config Debug `
 	`
-	&& cmake --install "%DXC_BUILD_DIRECTORY%\tools\clang\tools\dxc" --prefix "%GIT_DXC_REPOSITORY_PATH%\install\debug" --config Debug `
-	`
-  	&& cmake -E rm -Rf -- "%DXC_BUILD_DIRECTORY%"
+	&& cmake --install "%DXC_BUILD_DIRECTORY%\tools\clang\tools\dxc" --prefix "%GIT_DXC_REPOSITORY_PATH%\install\debug" --config Debug
 	
 FROM ${BASE_IMAGE}
 SHELL ["cmd", "/S", "/C"]

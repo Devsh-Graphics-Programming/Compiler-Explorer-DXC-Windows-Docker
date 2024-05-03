@@ -82,10 +82,8 @@ RUN	`
 	`
 	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Debug --component Runtimes `
 	`
-	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Debug --component Executables `
-	`
-  	&& cmake -E rm -Rf -- "%GIT_NABLA_DIRECTORY%\build"
-
+	&& cmake --install "%GIT_NABLA_DIRECTORY%\build\static" --prefix "%GIT_NABLA_DIRECTORY%/install" --config Debug --component Executables
+	
 FROM ${BASE_IMAGE}
 SHELL ["cmd", "/S", "/C"]
 
