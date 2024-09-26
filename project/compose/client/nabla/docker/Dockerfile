@@ -64,7 +64,7 @@ RUN	`
 	`
 	&& "%VS_VCVARSALL_DIRECTORY%\vcvarsall.bat" x64 `
 	`
-	&& cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
+	&& cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -DGIT_FAIL_IF_NONZERO_EXIT=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
 	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release `
 	`
