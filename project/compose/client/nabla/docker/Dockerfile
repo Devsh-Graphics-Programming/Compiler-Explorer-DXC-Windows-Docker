@@ -25,16 +25,16 @@ RUN `
 	`
 	&& del /q cmake.zip
 
- RUN `
+RUN `
 	# NASM
 	`
 	curl -SL --output nasm.zip https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/win64/nasm-2.16.03-win64.zip `
 	`
-	&& mkdir "./nasm" `
+	&& mkdir "nasm" `
 	`
-	&& tar -xf nasm.zip -C "./nasm" `
+	&& tar -xf nasm.zip -C "nasm" `
 	`
-	&& setx PATH "%PATH%;%CD%\\nasm" /M `
+	&& setx NASM_EXECUTABLE "%CD%\\nasm\\nasm.exe" /M `
 	`
 	&& del /q nasm.zip
 
@@ -77,7 +77,7 @@ RUN	`
 	`
 	&& "%VS_VCVARSALL_DIRECTORY%\vcvarsall.bat" x64 `
 	`
-	&& cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -DGIT_FAIL_IF_NONZERO_EXIT=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% `
+	&& cmake -S "%GIT_NABLA_DIRECTORY%" --preset ci-configure-static-msvc -DNBL_BUILD_EXAMPLES=OFF -DGIT_FAIL_IF_NONZERO_EXIT=OFF -D_NBL_JOBS_AMOUNT_=%_NBL_JOBS_AMOUNT_% -DCMAKE_ASM_NASM_COMPILER="%NASM_EXECUTABLE%" `
 	`
 	&& cmake --build "%GIT_NABLA_DIRECTORY%\build\static\tools\nsc" --target nsc --config Release `
 	`
