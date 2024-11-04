@@ -25,6 +25,19 @@ RUN `
 	`
 	&& del /q cmake.zip
 
+ RUN `
+	# NASM
+	`
+	curl -SL --output nasm.zip https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/win64/nasm-2.16.03-win64.zip `
+	`
+	&& mkdir "./nasm" `
+	`
+	&& tar -xf nasm.zip -C "./nasm" `
+	`
+	&& setx PATH "%PATH%;%CD%\\nasm" /M `
+	`
+	&& del /q nasm.zip
+
 FROM NBL_I_CMAKE_IMAGE as NBL_I_BUILD_IMAGE
 SHELL ["cmd", "/S", "/C"]
 
