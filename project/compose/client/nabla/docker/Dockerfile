@@ -34,7 +34,7 @@ RUN `
 	`
 	&& tar -xf nasm.zip -C "nasm" `
 	`
-	&& setx NASM_EXECUTABLE "%CD%\\nasm\\nasm.exe" /M `
+	&& setx NASM_EXECUTABLE "%CD%\\nasm\\nasm-2.16.03\\nasm.exe" /M `
 	`
 	&& del /q nasm.zip
 
