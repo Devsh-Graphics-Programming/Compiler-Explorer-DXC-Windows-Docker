@@ -1,5 +1,10 @@
 # Compiler-Explorer-DXC-Windows-Docker
 
+> ⚠️ **Archived Repository Notice**
+>
+> This repository is **archived** and no longer maintained. 
+> It has been replaced by [Devsh-Graphics-Programming/Compiler-Explorer-Docker](https://github.com/Devsh-Graphics-Programming/Compiler-Explorer-Docker).  
+
 In hurry to compile your HLSL with latest DXC? Unfortunately [Godbolt](https://godbolt.org/) appears to be 3 months out of date again? Use this repository and host your own Compiler Explorer instance on your localhost with most recent DXC compiled from official https://github.com/microsoft/DirectXShaderCompiler!
 
 ## Requirements
